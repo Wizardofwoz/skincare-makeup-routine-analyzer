@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fff6ee" />
+    <title>Skincare &amp; Makeup Routine Analyzer</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <p class="eyebrow">Skincare &amp; Makeup Routine Analyzer</p>
+      <h1 id="greeting">Hello, gorgeous</h1>
+      <p class="sub">Small steps, glowing habits.</p>
+      <div class="streak" id="streak" aria-live="polite">
+        <span class="flame" aria-hidden="true">🌸</span>
+        <div>
+          <strong id="streak-count">0 day streak</strong>
+          <span id="streak-msg">Finish your morning or evening routine to start one!</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="routine" class="card" aria-labelledby="routine-h">
+        <h2 id="routine-h">My routine</h2>
+        <div class="tabs" role="tablist" aria-label="Routine time">
+          <button role="tab" id="tab-morning" data-tab="morning" aria-controls="steps-panel">☀️ Morning</button>
+          <button role="tab" id="tab-evening" data-tab="evening" aria-controls="steps-panel">🌙 Evening</button>
+          <button role="tab" id="tab-makeup" data-tab="makeup" aria-controls="steps-panel">💄 Makeup</button>
+        </div>
+        <div id="steps-panel" role="tabpanel">
+          <div class="progress-row">
+            <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="progress">
+              <div class="bar" id="bar"></div>
+            </div>
+            <span id="progress-text"></span>
+          </div>
+          <p class="cheer" id="cheer" aria-live="polite"></p>
+          <ul class="steps" id="steps"></ul>
+          <form class="add-row" id="step-form" autocomplete="off">
+            <label class="sr" for="step-input">Add a step</label>
+            <input id="step-input" type="text" maxlength="40" placeholder="Add your own step…" required />
+            <button type="submit" class="btn">Add</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="photos" class="card" aria-labelledby="photos-h">
+        <h2 id="photos-h">Face photo analysis</h2>
+        <p class="hint">Take or upload a clear, front-facing photo in good light. 🔒 Photos and results stay on this device. Nothing is uploaded.</p>
+        <div class="photo-actions">
+          <label class="btn cam">
+            📸 Take a photo
+            <input id="cam-input" class="file-in" type="file" accept="image/*" capture="user" />
+          </label>
+          <label class="btn ghost cam">
+            🖼️ Upload a photo
+            <input id="pick-input" class="file-in" type="file" accept="image/*" />
+          </label>
+        </div>
+        <p id="photo-busy" class="busy" role="status" hidden>✨ Looking at your photo…</p>
+        <div id="photo-preview" class="preview" hidden>
+          <img id="preview-img" alt="Your photo preview" />
+          <div id="photo-result" aria-live="polite"></div>
+          <label class="field">Note for this photo
+            <textarea id="photo-note" maxlength="200" rows="2" placeholder="e.g. new serum day 3, a bit dry"></textarea>
+          </label>
+          <div class="row">
+            <button class="btn" id="photo-save" type="button">Save photo + results</button>
+            <button class="btn ghost" id="photo-cancel" type="button">Cancel</button>
+          </div>
+        </div>
+        <h3 class="sub-h">History</h3>
+        <ul class="history" id="history"></ul>
+      </section>
+
+      <section id="reminders" class="card" aria-labelledby="rem-h">
+        <h2 id="rem-h">Reminders</h2>
+        <p class="hint">Get a nudge when it's time for your routine. Works while this page is open.</p>
+        <button id="rem-enable" class="btn wide" type="button" aria-pressed="false">🔔 Turn on reminders</button>
+        <p class="rem-status" id="rem-status" aria-live="polite"></p>
+        <div class="rem-row">
+          <label class="step"><input type="checkbox" id="rem-morning-on" /><span class="box" aria-hidden="true"></span><span class="name">☀️ Morning</span></label>
+          <input type="time" id="rem-morning-time" aria-label="Morning reminder time" required />
+        </div>
+        <div class="rem-row">
+          <label class="step"><input type="checkbox" id="rem-evening-on" /><span class="box" aria-hidden="true"></span><span class="name">🌙 Evening</span></label>
+          <input type="time" id="rem-evening-time" aria-label="Evening reminder time" required />
+        </div>
+        <button id="rem-test" class="btn ghost wide" type="button">▶️ Preview the alert</button>
+      </section>
+
+      <section id="shelf" class="card" aria-labelledby="shelf-h">
+        <h2 id="shelf-h">Product shelf</h2>
+        <p class="hint">Track when you opened things. Makeup doesn't last forever!</p>
+        <form class="shelf-form" id="product-form" autocomplete="off">
+          <label>Product name
+            <input id="p-name" type="text" maxlength="50" placeholder="e.g. Rosy lip tint" required />
+          </label>
+          <div class="two">
+            <label>Category
+              <select id="p-cat"></select>
+            </label>
+            <label>Date opened
+              <input id="p-date" type="date" required />
+            </label>
+          </div>
+          <button type="submit" class="btn wide">Add to shelf</button>
+        </form>
+        <ul class="products" id="products"></ul>
+      </section>
+
+      <section id="quiz" class="card" aria-labelledby="quiz-h">
+        <h2 id="quiz-h">Skin quiz</h2>
+        <div id="quiz-body"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>💗 Always patch test new products, and see a dermatologist for any skin concerns. The Skincare &amp; Makeup Routine Analyzer is for fun habit-tracking, not medical advice.</p>
+    </footer>
+
+    <nav class="bottom-nav" aria-label="Sections">
+      <a href="#routine">✨ Routine</a>
+      <a href="#photos">📸 Photo</a>
+      <a href="#reminders">🔔 Remind</a>
+      <a href="#shelf">🧴 Shelf</a>
+      <a href="#quiz">🌷 Quiz</a>
+    </nav>
+
+    <div id="viewer" class="overlay" role="dialog" aria-modal="true" aria-labelledby="viewer-title" hidden>
+      <div class="sheet">
+        <div class="sheet-head">
+          <h2 id="viewer-title">Saved photo</h2>
+          <button class="icon-btn" id="viewer-close" type="button" aria-label="Close">✕</button>
+        </div>
+        <div id="viewer-body"></div>
+      </div>
+    </div>
+
+    <div id="rem-alert" class="alert-overlay" role="alertdialog" aria-modal="true" aria-labelledby="rem-alert-title" aria-describedby="rem-alert-msg" hidden>
+      <div class="alert-card">
+        <div class="alert-icon" aria-hidden="true">🌸</div>
+        <h2 id="rem-alert-title">Time for your skincare routine!</h2>
+        <p id="rem-alert-msg"></p>
+        <button class="btn wide" id="rem-dismiss" type="button">✓ Got it</button>
+        <button class="btn ghost wide" id="rem-snooze" type="button">😴 Snooze 10 min</button>
+      </div>
+    </div>
+
+    <script type="module" src="/src/app.js"></script>
+  </body>
+</html>
